@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Chimaz Fashion House{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Satisfy&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<div class="topbar">
+  <form method="get" action="{% url 'product_listing' %}" class="search-bar">
+    <svg width="13" height="13" fill="none" stroke="#6b6b7a" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke-width="1.5"/><path d="m21 21-4.35-4.35" stroke-width="1.5"/></svg>
+    <input type="text" name="q" placeholder="Search clothes, shoes..." value="{{ request.GET.q }}">
+  </form>
+  <div class="filter-pills">
+    <a href="{% url 'product_listing' %}" class="pill {% if not request.GET.category %}active{% endif %}">All</a>
+    <a href="{% url 'product_listing' %}?category=t-shirts" class="pill {% if request.GET.category == 't-shirts' %}active{% endif %}">T-Shirts</a>
+    <a href="{% url 'product_listing' %}?category=hoodies" class="pill {% if request.GET.category == 'hoodies' %}active{% endif %}">Hoodies</a>
+    <a href="{% url 'product_listing' %}?category=joggers" class="pill {% if request.GET.category == 'joggers' %}active{% endif %}">Joggers</a>
+    <a href="{% url 'product_listing' %}?category=sneakers" class="pill {% if request.GET.category == 'sneakers' %}active{% endif %}">Sneakers</a>
+    <a href="{% url 'product_listing' %}?category=boots" class="pill {% if request.GET.category == 'boots' %}active{% endif %}">Boots</a>
+    <a href="{% url 'product_listing' %}?category=loafers" class="pill {% if request.GET.category == 'loafers' %}active{% endif %}">Loafers</a>
+  </div>
+</div>
+
+<!-- BODY WRAP -->
+<div class="body-wrap">
+
+  <div class="main-content">
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="message {{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <div class="page-content">
+      {% block content %}{% endblock %}
+    </div>
+
+    <footer class="footer">
+      <p>© 2025 Chimaz Fashion House. All rights reserved.</p>
+      <p>Free shipping on orders over $150</p>
+    </footer>
+
+  </div>
+
+  <!-- RIGHT SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <h1 class="logo-red">Chimaz</h1>
+      <span>Fashion House</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Explore</div>
+      <a href="{% url 'home' %}" class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        Home
+      </a>
+      <a href="{% url 'product_listing' %}" class="nav-item {% if request.resolver_match.url_name == 'product_listing' %}active{% endif %}">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+        All Products
+      </a>
+
+      <hr class="nav-divider">
+      <div class="nav-section-label">Clothing</div>
+      <a href="{% url 'product_listing' %}?category=t-shirts" class="nav-item">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 2L2 7l4 2v13h12V9l4-2-4-5H6z"/></svg>
+        T-Shirts
+      </a>
+      <a href="{% url 'product_listing' %}?category=hoodies" class="nav-item">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+        Hoodies
+      </a>
+      <a href="{% url 'product_listing' %}?category=joggers" class="nav-item">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        Joggers
+      </a>
+
+      <hr class="nav-divider">
+      <div class="nav-section-label">Shoes</div>
+      <a href="{% url 'product_listing' %}?category=sneakers" class="nav-item">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14c0 3.314-3.134 6-7 6s-7-2.686-7-6c0-1.562.75-2.988 2-4.063V5a1 1 0 011-1h8a1 1 0 011 1v4.937C18.25 11.012 19 12.438 19 14z"/></svg>
+        Sneakers
+      </a>
+      <a href="{% url 'product_listing' %}?category=boots" class="nav-item">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 21h14M5 21v-4l7-2 7 2v4M5 17V9l4-6h6l4 6v8"/></svg>
+        Boots
+      </a>
+      <a href="{% url 'product_listing' %}?category=loafers" class="nav-item">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 17l3-8h12l3 8H3z"/></svg>
+        Loafers
+      </a>
+
+      <hr class="nav-divider">
+      <div class="nav-section-label">Account</div>
+      {% if user.is_authenticated %}
+      <span class="nav-item">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        {{ user.username }}
+      </span>
+      {% if user.is_staff %}
+      <a href="{% url 'admin_dashboard' %}" class="nav-item">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3" stroke-width="1.5"/></svg>
+        Admin Panel
+      </a>
+      {% endif %}
+      <a href="{% url 'logout' %}" class="nav-item">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        Logout
+      </a>
+      {% else %}
+      <a href="{% url 'login' %}" class="nav-item">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+        Login
+      </a>
+      <a href="{% url 'register' %}" class="nav-item">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+        Register
+      </a>
+      {% endif %}
+    </nav>
+
+    <a href="{% url 'cart' %}" class="sidebar-cart">
+      <span>Cart</span>
+      <span class="cart-badge">{{ cart_count }}</span>
+    </a>
+
+    <div class="sidebar-user">
+      <div class="user-avatar">{{ user.username|first|upper|default:"G" }}</div>
+      <div class="user-info">
+        <p>{{ user.username|default:"Guest" }}</p>
+        <span>{% if user.is_authenticated %}Signed in{% else %}Not signed in{% endif %}</span>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

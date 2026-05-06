@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Home — Noir & Co{% endblock %}
+{% block content %}
+
+<div class="hero">
+  <div class="hero-text">
+    <h2>Dress with<br><em>Intention.</em></h2>
+    <p>New Collection — 2025</p>
+    <a href="{% url 'product_listing' %}" class="btn">Shop Now</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">48</span>
+      <span class="stat-label">Styles</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">2</span>
+      <span class="stat-label">Categories</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">Free</span>
+      <span class="stat-label">Shipping</span>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <h3>Featured Products</h3>
+    <a href="{% url 'product_listing' %}">View All →</a>
+  </div>
+  <div class="product-grid">
+    {% for product in products %}
+    <div class="product-card">
+      <img src="{{ product.image_url }}" alt="{{ product.name }}">
+      <div class="product-body">
+        <p class="product-category">{{ product.category.name }}</p>
+        <p class="product-name">{{ product.name }}</p>
+        <div class="product-footer">
+          <span class="price">${{ product.price }}</span>
+          <a href="{% url 'product_detail' product.slug %}" class="add-btn">View</a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p style="color: var(--grey-mid);">No products yet. Add some via the admin panel.</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

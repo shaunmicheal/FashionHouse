@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard — Chimaz{% endblock %}
+{% block content %}
+<div class="section">
+
+  <div class="section-header">
+    <h3>Admin Dashboard</h3>
+    <a href="{% url 'admin_add_product' %}" class="btn">+ Add Product</a>
+  </div>
+
+  <div class="admin-stats">
+    <div class="admin-stat-card">
+      <span class="admin-stat-num">{{ total }}</span>
+      <span class="admin-stat-label">Total Products</span>
+    </div>
+    <div class="admin-stat-card">
+      <span class="admin-stat-num">{{ available }}</span>
+      <span class="admin-stat-label">Available</span>
+    </div>
+    <div class="admin-stat-card out">
+      <span class="admin-stat-num">{{ out_of_stock }}</span>
+      <span class="admin-stat-label">Out of Stock</span>
+    </div>
+  </div>
+
+  <table class="cart-table" style="margin-top:32px;">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+      <tr>
+        <td>
+          <img src="{{ product.image_url }}" alt="{{ product.name }}"
+            style="width:50px;height:50px;object-fit:cover;border:1px solid #1a1a25;">
+        </td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.category.name }}</td>
+        <td>${{ product.price }}</td>
+        <td>{{ product.stock }}</td>
+        <td>
+          <form method="post" action="{% url 'admin_toggle_stock' product.id %}">
+            {% csrf_token %}
+            <button type="submit"
+              class="status-badge {% if product.available %}status-in{% else %}status-out{% endif %}">
+              {% if product.available %}Available{% else %}Out of Stock{% endif %}
+            </button>
+          </form>
+        </td>
+        <td style="display:flex;gap:8px;align-items:center;padding-top:18px;">
+          <a href="{% url 'admin_edit_product' product.id %}" class="btn-sm">Edit</a>
+          <form method="post" action="{% url 'admin_delete_product' product.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn-danger"
+              onclick="return confirm('Delete {{ product.name }}?')">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="7" style="color:var(--grey);text-align:center;padding:32px;">
+          No products yet. Click "+ Add Product" above.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+{% endblock %}
