@@ -26,9 +26,16 @@
     <a href="{% url 'product_listing' %}?category=boots" class="pill {% if request.GET.category == 'boots' %}active{% endif %}">Boots</a>
     <a href="{% url 'product_listing' %}?category=loafers" class="pill {% if request.GET.category == 'loafers' %}active{% endif %}">Loafers</a>
   </div>
+  <!-- HAMBURGER (visible on mobile only) -->
+  <button class="hamburger" id="hamburgerBtn" aria-label="Open menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
 </div>
 
-<!-- BODY WRAP -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 <div class="body-wrap">
 
   <div class="main-content">
@@ -50,8 +57,7 @@
 
   </div>
 
-  <!-- RIGHT SIDEBAR -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
       <h1 class="logo-red">Chimaz</h1>
       <span>Fashion House</span>
@@ -144,5 +150,35 @@
 </div>
 
 <script src="{% static 'js/main.js' %}"></script>
+
+<script>
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+
+  function openSidebar() {
+    sidebar.classList.add('open');
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  hamburgerBtn.addEventListener('click', () => {
+    sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+  });
+
+  overlay.addEventListener('click', closeSidebar);
+
+  // Close sidebar when a nav link is clicked (mobile UX)
+  sidebar.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeSidebar);
+  });
+</script>
+
 </body>
 </html>
